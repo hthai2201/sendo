@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: testdb
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres" --health-interval=10s --health-timeout=5s --health-retries=5
+      redis:
+        image: redis:6-alpine
+        ports:
+          - 6379:6379
+    env:
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/testdb?sslmode=disable
+      REDIS_URL: redis://localhost:6379
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.22"
+      - name: Install dependencies (user-service)
+        run: |
+          cd user-service
+          go mod tidy
+      - name: Run tests (user-service)
+        run: |
+          cd user-service
+          go test ./...
+      - name: Install dependencies (product-service)
+        run: |
+          cd product-service
+          go mod tidy
+      - name: Run tests (product-service)
+        run: |
+          cd product-service
+          go test ./...
+      - name: Install dependencies (order-service)
+        run: |
+          cd order-service
+          go mod tidy
+      - name: Run tests (order-service)
+        run: |
+          cd order-service
+          go test ./...
+      - name: Install dependencies (chatbot-service)
+        run: |
+          cd chatbot-service
+          go mod tidy
+      - name: Run tests (chatbot-service)
+        run: |
+          cd chatbot-service
+          go test ./...

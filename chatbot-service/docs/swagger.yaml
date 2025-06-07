@@ -1,0 +1,35 @@
+openapi: 3.0.0
+info:
+  title: Chatbot Service API
+  version: 1.0.0
+paths:
+  /chatbot/query:
+    post:
+      summary: Query chatbot with a message
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChatbotQuery"
+      responses:
+        "200":
+          description: Chatbot reply
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ChatbotReply"
+        "400":
+          description: Invalid input
+components:
+  schemas:
+    ChatbotQuery:
+      type: object
+      properties:
+        message:
+          type: string
+    ChatbotReply:
+      type: object
+      properties:
+        reply:
+          type: string
