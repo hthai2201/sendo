@@ -18,10 +18,21 @@ type ChatbotReply struct {
 	Reply string `json:"reply"`
 }
 
+// RegisterChatbotRoutes registers the chatbot routes
 func RegisterChatbotRoutes(r *gin.Engine) {
 	r.POST("/chatbot/query", ChatbotQueryHandler)
 }
 
+// ChatbotQueryHandler godoc
+// @Summary Query the chatbot
+// @Description Send a message to the chatbot and receive a reply
+// @Tags chatbot
+// @Accept json
+// @Produce json
+// @Param query body ChatbotQuery true "Chatbot query"
+// @Success 200 {object} ChatbotReply
+// @Failure 400 {object} map[string]string
+// @Router /chatbot/query [post]
 func ChatbotQueryHandler(c *gin.Context) {
 	var req ChatbotQuery
 	if err := c.ShouldBindJSON(&req); err != nil {

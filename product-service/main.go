@@ -7,12 +7,22 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
+	_ "github.com/luke/sfconnect-backend/product-service/docs"
 	"github.com/luke/sfconnect-backend/product-service/internal/cache"
 	. "github.com/luke/sfconnect-backend/product-service/internal/handler"
 	"github.com/luke/sfconnect-backend/product-service/internal/repository"
 	"github.com/luke/sfconnect-backend/product-service/internal/service"
 	"github.com/redis/go-redis/v9"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
+
+// @title SFConnect Product Service API
+// @version 1.0
+// @description API documentation for the Product Service.
+// @host localhost:8082
+// @BasePath /
 
 func main() {
 	_ = godotenv.Load()
@@ -32,6 +42,7 @@ func main() {
 	h := NewProductHandler(svc)
 
 	r := gin.Default()
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.POST("/products", AuthMiddleware(), AuthorizeRole("partner"), h.Create)
 	r.GET("/products/:id", h.GetByID)
 	r.GET("/products", h.List)
@@ -40,7 +51,7 @@ func main() {
 
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8081"
+		port = "8082"
 	}
 	r.Run(":" + port)
 }

@@ -49,10 +49,9 @@ func (h *UserHandler) Register(c *gin.Context) {
 // @Tags auth
 // @Accept json
 // @Produce json
-// @Param body body models.LoginRequest true "Login info"
+// @Param body body models.LoginRequest true "User login info"
 // @Success 200 {object} map[string]string
 // @Failure 400 {object} map[string]string
-// @Failure 401 {object} map[string]string
 // @Router /login [post]
 func (h *UserHandler) Login(c *gin.Context) {
 	var req models.LoginRequest
@@ -99,12 +98,11 @@ func AuthorizeRole(requiredRole string) gin.HandlerFunc {
 }
 
 // GetProfile godoc
-// @Summary Get authenticated user's profile
-// @Tags user
-// @Security BearerAuth
+// @Summary Get user profile
+// @Tags users
 // @Produce json
 // @Success 200 {object} models.User
-// @Failure 404 {object} map[string]string
+// @Failure 401 {object} map[string]string
 // @Router /me [get]
 func (h *UserHandler) GetProfile(c *gin.Context) {
 	userID, _ := c.Get("user_id")
@@ -117,15 +115,14 @@ func (h *UserHandler) GetProfile(c *gin.Context) {
 }
 
 // UpdateProfile godoc
-// @Summary Update authenticated user's profile
-// @Tags user
-// @Security BearerAuth
+// @Summary Update user profile
+// @Tags users
 // @Accept json
 // @Produce json
 // @Param body body models.UpdateProfileRequest true "Profile update info"
-// @Success 200 {object} map[string]string
+// @Success 200 {object} models.User
 // @Failure 400 {object} map[string]string
-// @Failure 500 {object} map[string]string
+// @Failure 401 {object} map[string]string
 // @Router /me [put]
 func (h *UserHandler) UpdateProfile(c *gin.Context) {
 	userID, _ := c.Get("user_id")
@@ -143,17 +140,16 @@ func (h *UserHandler) UpdateProfile(c *gin.Context) {
 }
 
 // UpdateUserRole godoc
-// @Summary Update a user's role (admin only)
-// @Tags admin
-// @Security BearerAuth
+// @Summary Update user role
+// @Tags users
 // @Accept json
 // @Produce json
 // @Param id path string true "User ID"
 // @Param body body models.UpdateRoleRequest true "Role update info"
-// @Success 200 {object} map[string]string
+// @Success 200 {object} models.User
 // @Failure 400 {object} map[string]string
-// @Failure 404 {object} map[string]string
-// @Failure 500 {object} map[string]string
+// @Failure 401 {object} map[string]string
+// @Failure 403 {object} map[string]string
 // @Router /users/{id}/role [put]
 func (h *UserHandler) UpdateUserRole(c *gin.Context) {
 	userID := c.Param("id")

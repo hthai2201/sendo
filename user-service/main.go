@@ -6,18 +6,18 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	_ "github.com/luke/sfconnect-backend/user-service/docs"
 	"github.com/luke/sfconnect-backend/user-service/internal/handler"
 	"github.com/luke/sfconnect-backend/user-service/internal/repository"
 	"github.com/luke/sfconnect-backend/user-service/internal/service"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	_ "github.com/swaggo/gin-swagger/example/basic/docs"
 )
 
 // @title SFConnect User Service API
 // @version 1.0
 // @description API documentation for the User Service.
-// @host localhost:8080
+// @host localhost:8081
 // @BasePath /
 
 func main() {
@@ -36,7 +36,7 @@ func main() {
 
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8080"
+		port = "8081"
 	}
 	r.Run(":" + port)
 }

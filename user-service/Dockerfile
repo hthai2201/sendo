@@ -8,5 +8,5 @@ FROM alpine:latest
 WORKDIR /root/
 COPY --from=builder /app/user-service .
 COPY .env.example .env
-EXPOSE 8080
+EXPOSE 8081
 CMD ["./user-service"]

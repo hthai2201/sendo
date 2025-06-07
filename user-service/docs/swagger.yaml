@@ -45,7 +45,7 @@ definitions:
       updated_at:
         type: string
     type: object
-host: localhost:8080
+host: localhost:8081
 info:
   contact: {}
   description: API documentation for the User Service.
@@ -57,7 +57,7 @@ paths:
       consumes:
       - application/json
       parameters:
-      - description: Login info
+      - description: User login info
         in: body
         name: body
         required: true
@@ -78,12 +78,6 @@ paths:
             additionalProperties:
               type: string
             type: object
-        "401":
-          description: Unauthorized
-          schema:
-            additionalProperties:
-              type: string
-            type: object
       summary: Login and get JWT token
       tags:
       - auth
@@ -96,17 +90,15 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/models.User'
-        "404":
-          description: Not Found
+        "401":
+          description: Unauthorized
           schema:
             additionalProperties:
               type: string
             type: object
-      security:
-      - BearerAuth: []
-      summary: Get authenticated user's profile
+      summary: Get user profile
       tags:
-      - user
+      - users
     put:
       consumes:
       - application/json
@@ -123,26 +115,22 @@ paths:
         "200":
           description: OK
           schema:
-            additionalProperties:
-              type: string
-            type: object
+            $ref: '#/definitions/models.User'
         "400":
           description: Bad Request
           schema:
             additionalProperties:
               type: string
             type: object
-        "500":
-          description: Internal Server Error
+        "401":
+          description: Unauthorized
           schema:
             additionalProperties:
               type: string
             type: object
-      security:
-      - BearerAuth: []
-      summary: Update authenticated user's profile
+      summary: Update user profile
       tags:
-      - user
+      - users
   /register:
     post:
       consumes:
@@ -192,30 +180,26 @@ paths:
         "200":
           description: OK
           schema:
-            additionalProperties:
-              type: string
-            type: object
+            $ref: '#/definitions/models.User'
         "400":
           description: Bad Request
           schema:
             additionalProperties:
               type: string
             type: object
-        "404":
-          description: Not Found
+        "401":
+          description: Unauthorized
           schema:
             additionalProperties:
               type: string
             type: object
-        "500":
-          description: Internal Server Error
+        "403":
+          description: Forbidden
           schema:
             additionalProperties:
               type: string
             type: object
-      security:
-      - BearerAuth: []
-      summary: Update a user's role (admin only)
+      summary: Update user role
       tags:
-      - admin
+      - users
 swagger: "2.0"

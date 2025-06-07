@@ -1,35 +1,48 @@
-openapi: 3.0.0
+basePath: /
+definitions:
+  handler.ChatbotQuery:
+    properties:
+      message:
+        type: string
+    type: object
+  handler.ChatbotReply:
+    properties:
+      reply:
+        type: string
+    type: object
+host: localhost:8084
 info:
-  title: Chatbot Service API
-  version: 1.0.0
+  contact: {}
+  description: API documentation for the Chatbot Service.
+  title: SFConnect Chatbot Service API
+  version: "1.0"
 paths:
   /chatbot/query:
     post:
-      summary: Query chatbot with a message
-      requestBody:
+      consumes:
+      - application/json
+      description: Send a message to the chatbot and receive a reply
+      parameters:
+      - description: Chatbot query
+        in: body
+        name: query
         required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ChatbotQuery"
+        schema:
+          $ref: '#/definitions/handler.ChatbotQuery'
+      produces:
+      - application/json
       responses:
         "200":
-          description: Chatbot reply
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ChatbotReply"
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.ChatbotReply'
         "400":
-          description: Invalid input
-components:
-  schemas:
-    ChatbotQuery:
-      type: object
-      properties:
-        message:
-          type: string
-    ChatbotReply:
-      type: object
-      properties:
-        reply:
-          type: string
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Query the chatbot
+      tags:
+      - chatbot
+swagger: "2.0"

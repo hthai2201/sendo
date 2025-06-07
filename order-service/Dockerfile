@@ -16,4 +16,6 @@ WORKDIR /root/
 
 COPY --from=builder /app .
 
+EXPOSE 8083
+
 CMD ["./main"]

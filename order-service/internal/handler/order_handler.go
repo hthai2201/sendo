@@ -16,7 +16,16 @@ func NewOrderHandler(s service.OrderService) *OrderHandler {
 	return &OrderHandler{service: s}
 }
 
-// POST /orders
+// CreateOrder godoc
+// @Summary Create a new order
+// @Description Create a new order for the authenticated user
+// @Tags orders
+// @Accept json
+// @Produce json
+// @Param order body models.OrderCreateRequest true "Order create request"
+// @Success 201 {object} models.Order
+// @Failure 400 {object} map[string]string
+// @Router /orders [post]
 func (h *OrderHandler) CreateOrder(c *gin.Context) {
 	userID := c.GetString("user_id")
 	var req models.OrderCreateRequest
@@ -32,7 +41,15 @@ func (h *OrderHandler) CreateOrder(c *gin.Context) {
 	c.JSON(http.StatusCreated, order)
 }
 
-// GET /orders/:id
+// GetOrderByID godoc
+// @Summary Get order by ID
+// @Description Get an order by its ID (user or admin)
+// @Tags orders
+// @Produce json
+// @Param id path string true "Order ID"
+// @Success 200 {object} models.Order
+// @Failure 403 {object} map[string]string
+// @Router /orders/{id} [get]
 func (h *OrderHandler) GetOrderByID(c *gin.Context) {
 	orderID := c.Param("id")
 	userID := c.GetString("user_id")
@@ -45,7 +62,13 @@ func (h *OrderHandler) GetOrderByID(c *gin.Context) {
 	c.JSON(http.StatusOK, order)
 }
 
-// GET /orders/my-orders
+// ListMyOrders godoc
+// @Summary List my orders
+// @Description List all orders for the authenticated user
+// @Tags orders
+// @Produce json
+// @Success 200 {array} models.Order
+// @Router /orders/my-orders [get]
 func (h *OrderHandler) ListMyOrders(c *gin.Context) {
 	userID := c.GetString("user_id")
 	orders, err := h.service.ListOrdersByUser(userID)

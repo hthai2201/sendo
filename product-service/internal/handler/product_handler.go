@@ -47,6 +47,18 @@ func AuthorizeRole(requiredRole string) gin.HandlerFunc {
 	}
 }
 
+// Create godoc
+// @Summary Create a new product
+// @Description Create a new product (partner only)
+// @Tags products
+// @Accept json
+// @Produce json
+// @Param product body models.Product true "Product info"
+// @Success 201 {object} models.Product
+// @Failure 400 {object} map[string]string
+// @Failure 401 {object} map[string]string
+// @Failure 403 {object} map[string]string
+// @Router /products [post]
 func (h *ProductHandler) Create(c *gin.Context) {
 	var req models.ProductCreateRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -56,12 +68,12 @@ func (h *ProductHandler) Create(c *gin.Context) {
 	// Assume partner_id is extracted from JWT claims
 	partnerID := c.GetString("user_id")
 	product := &models.Product{
-		Name: req.Name,
+		Name:        req.Name,
 		Description: req.Description,
-		Price: req.Price,
-		ImageURL: req.ImageURL,
-		Stock: req.Stock,
-		PartnerID: partnerID,
+		Price:       req.Price,
+		ImageURL:    req.ImageURL,
+		Stock:       req.Stock,
+		PartnerID:   partnerID,
 	}
 	if err := h.service.Create(product); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -70,6 +82,15 @@ func (h *ProductHandler) Create(c *gin.Context) {
 	c.JSON(http.StatusCreated, product)
 }
 
+// GetByID godoc
+// @Summary Get product by ID
+// @Description Get a product by its ID
+// @Tags products
+// @Produce json
+// @Param id path string true "Product ID"
+// @Success 200 {object} models.Product
+// @Failure 404 {object} map[string]string
+// @Router /products/{id} [get]
 func (h *ProductHandler) GetByID(c *gin.Context) {
 	id := c.Param("id")
 	product, err := h.service.GetByID(id)
@@ -80,6 +101,14 @@ func (h *ProductHandler) GetByID(c *gin.Context) {
 	c.JSON(http.StatusOK, product)
 }
 
+// List godoc
+// @Summary List all products
+// @Description Get a list of all products
+// @Tags products
+// @Produce json
+// @Success 200 {array} models.Product
+// @Failure 500 {object} map[string]string
+// @Router /products [get]
 func (h *ProductHandler) List(c *gin.Context) {
 	products, err := h.service.List()
 	if err != nil {
@@ -89,6 +118,19 @@ func (h *ProductHandler) List(c *gin.Context) {
 	c.JSON(http.StatusOK, products)
 }
 
+// Update godoc
+// @Summary Update a product
+// @Description Update a product by ID (partner only)
+// @Tags products
+// @Accept json
+// @Produce json
+// @Param id path string true "Product ID"
+// @Param product body models.ProductUpdateRequest true "Product update info"
+// @Success 200 {object} models.Product
+// @Failure 400 {object} map[string]string
+// @Failure 404 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /products/{id} [put]
 func (h *ProductHandler) Update(c *gin.Context) {
 	id := c.Param("id")
 	var req models.ProductUpdateRequest
@@ -123,6 +165,15 @@ func (h *ProductHandler) Update(c *gin.Context) {
 	c.JSON(http.StatusOK, product)
 }
 
+// Delete godoc
+// @Summary Delete a product
+// @Description Delete a product by ID (partner only)
+// @Tags products
+// @Produce json
+// @Param id path string true "Product ID"
+// @Success 200 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /products/{id} [delete]
 func (h *ProductHandler) Delete(c *gin.Context) {
 	id := c.Param("id")
 	if err := h.service.Delete(id); err != nil {
