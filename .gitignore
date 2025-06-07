@@ -24,6 +24,7 @@
 .env
 .env.*
 !.env.example
+**/.env
 
 # Go build output
 /vendor/

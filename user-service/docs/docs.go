@@ -336,3 +336,7 @@ var SwaggerInfo = &swag.Spec{
 func init() {
 	swag.Register(SwaggerInfo.InstanceName(), SwaggerInfo)
 }
+
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization

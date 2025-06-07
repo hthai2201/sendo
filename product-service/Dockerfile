@@ -6,6 +6,6 @@ RUN go mod tidy && go build -o product-service ./main.go
 FROM alpine:latest
 WORKDIR /root/
 COPY --from=builder /app/product-service .
-COPY .env.example .env
+COPY .env .env
 EXPOSE 8082
 CMD ["./product-service"]

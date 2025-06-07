@@ -1,11 +1,11 @@
 package main
 
 import (
-	"database/sql"
 	"log"
 	"os"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 	_ "github.com/luke/sfconnect-backend/order-service/docs"
 	"github.com/luke/sfconnect-backend/order-service/internal/handler"
@@ -23,7 +23,8 @@ import (
 // @BasePath /
 
 func main() {
-	db, err := sql.Open("postgres", os.Getenv("DATABASE_URL"))
+	_ = godotenv.Load()
+	db, err := repository.NewPostgresDB()
 	if err != nil {
 		log.Fatal(err)
 	}

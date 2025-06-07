@@ -1,14 +1,11 @@
 package main
 
 import (
-	"database/sql"
 	"log"
 	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
-	_ "github.com/lib/pq"
-	_ "github.com/luke/sfconnect-backend/product-service/docs"
 	"github.com/luke/sfconnect-backend/product-service/internal/cache"
 	. "github.com/luke/sfconnect-backend/product-service/internal/handler"
 	"github.com/luke/sfconnect-backend/product-service/internal/repository"
@@ -23,10 +20,16 @@ import (
 // @description API documentation for the Product Service.
 // @host localhost:8082
 // @BasePath /
+// @securityDefinitions.apikey Bearer
+// @in header
+// @name Authorization
+// @security Bearer
+// @schemes http https
+// @contact.name SFConnect Team
 
 func main() {
 	_ = godotenv.Load()
-	db, err := sql.Open("postgres", os.Getenv("PRODUCT_DB_DSN"))
+	db, err := repository.NewPostgresDB()
 	if err != nil {
 		log.Fatalf("failed to connect to db: %v", err)
 	}

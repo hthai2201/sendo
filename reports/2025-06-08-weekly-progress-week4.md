@@ -25,7 +25,7 @@
 - **Swagger/OpenAPI:**
   - Authored OpenAPI YAML for all endpoints and models.
 - **DevOps:**
-  - Dockerfile, .env.example, and Compose compatibility.
+  - Dockerfile, .env, and Compose compatibility.
 
 ### Challenges & Solutions
 

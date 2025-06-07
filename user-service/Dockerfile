@@ -7,6 +7,6 @@ RUN go mod tidy && go build -o user-service ./main.go
 FROM alpine:latest
 WORKDIR /root/
 COPY --from=builder /app/user-service .
-COPY .env.example .env
+COPY .env .env
 EXPOSE 8081
 CMD ["./user-service"]

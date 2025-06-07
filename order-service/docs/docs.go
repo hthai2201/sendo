@@ -209,6 +209,10 @@ var SwaggerInfo = &swag.Spec{
 	RightDelim:       "}}",
 }
 
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
+
 func init() {
 	swag.Register(SwaggerInfo.InstanceName(), SwaggerInfo)
 }

@@ -27,7 +27,7 @@ var (
 )
 
 func TestMain(m *testing.M) {
-	_ = godotenv.Load("../../.env.example")
+	_ = godotenv.Load("../../.env")
 	dsn := os.Getenv("TEST_DATABASE_DSN")
 	if dsn == "" {
 		dsn = "host=localhost port=5432 user=user_service_user password=password dbname=user_db sslmode=disable"

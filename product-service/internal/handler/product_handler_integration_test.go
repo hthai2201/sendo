@@ -24,10 +24,10 @@ var testRouter *gin.Engine
 var db *sql.DB
 
 func TestMain(m *testing.M) {
-	_ = godotenv.Load("../../.env.example")
-	db, _ = sql.Open("postgres", os.Getenv("PRODUCT_DB_DSN"))
+	_ = godotenv.Load("../../.env")
+	db, _ = repository.NewPostgresDB()
 	db.Exec("DROP TABLE IF EXISTS products;")
-	db.Exec(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";"`)
+	db.Exec(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`)
 	db.Exec(`CREATE TABLE IF NOT EXISTS products (
 		id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
 		name VARCHAR(255) NOT NULL,
